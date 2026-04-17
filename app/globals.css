@@ -21,3 +21,30 @@
   padding: 20px;
   margin-top: 40px;
 }
+.home {
+  max-width: 800px;
+  margin: auto;
+}
+
+.intro {
+  margin: 20px 0;
+  font-size: 18px;
+}
+
+.skills {
+  list-style: none;
+  padding: 0;
+}
+
+.skills li {
+  background: #e2e8f0;
+  margin: 8px 0;
+  padding: 10px;
+  border-radius: 6px;
+}
+.profile-img {
+  width: 150px;
+  border-radius: 50%;
+  display: block;
+  margin: 20px auto;
+}
