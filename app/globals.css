@@ -83,3 +83,12 @@ button {
   margin: 15px 0;
   border-radius: 8px;
 }
+.details-link {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 14px;
+  background: #0f172a;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+}
