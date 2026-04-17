@@ -48,3 +48,27 @@
   display: block;
   margin: 20px auto;
 }
+.form-container {
+  max-width: 400px;
+  margin: auto;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px;
+  background: #0f172a;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
