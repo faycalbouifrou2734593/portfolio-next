@@ -20,6 +20,26 @@ export async function GET() {
   }
 
   const testimonials = await Testimonial.findAll();
-
   return Response.json(testimonials);
+}
+
+export async function POST(req) {
+  await sequelize.sync();
+
+  const body = await req.json();
+  const { author, message } = body;
+
+  if (!author || !message) {
+    return Response.json(
+      { message: "Tous les champs sont obligatoires" },
+      { status: 400 }
+    );
+  }
+
+  const testimonial = await Testimonial.create({ author, message });
+
+  return Response.json({
+    message: "Témoignage ajouté avec succès",
+    testimonial,
+  });
 }

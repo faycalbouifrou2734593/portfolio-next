@@ -1,23 +1,42 @@
-async function getProjects() {
-  const res = await fetch("http://localhost:3000/api/projects");
-  return res.json();
-}
+"use client";
 
-export default async function ProjectDetailsPage({ params }) {
-  const { id } = await params;   // IMPORTANT
-  const projects = await getProjects();
-  const project = projects.find((p) => p.id === Number(id));
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import ProtectedRoute from "@/components/ProtectedRoute";
+
+export default function ProjectDetailsPage() {
+  const params = useParams();
+  const [project, setProject] = useState(null);
+
+  useEffect(() => {
+    fetch("/api/projects")
+      .then((res) => res.json())
+      .then((data) => {
+        const foundProject = data.find((p) => p.id === Number(params.id));
+        setProject(foundProject || null);
+      });
+  }, [params.id]);
 
   if (!project) {
-    return <h1>Projet introuvable</h1>;
+    return (
+      <ProtectedRoute>
+        <h1 style={{ padding: "20px" }}>Projet introuvable</h1>
+      </ProtectedRoute>
+    );
   }
 
   return (
-    <div className="projects">
-      <h1>{project.title}</h1>
-      <p>{project.description}</p>
-      <p><strong>Technologies :</strong> {project.technologies}</p>
-      <p><strong>Détails :</strong> {project.details}</p>
-    </div>
+    <ProtectedRoute>
+      <div className="projects">
+        <h1>{project.title}</h1>
+        <p>{project.description}</p>
+        <p>
+          <strong>Technologies :</strong> {project.technologies}
+        </p>
+        <p>
+          <strong>Détails :</strong> {project.details}
+        </p>
+      </div>
+    </ProtectedRoute>
   );
 }

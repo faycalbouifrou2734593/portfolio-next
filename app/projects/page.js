@@ -1,28 +1,37 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
-async function getProjects() {
-  const res = await fetch("http://localhost:3000/api/projects");
-  return res.json();
-}
+export default function ProjectsPage() {
+  const [projects, setProjects] = useState([]);
 
-export default async function ProjectsPage() {
-  const projects = await getProjects();
+  useEffect(() => {
+    fetch("/api/projects")
+      .then((res) => res.json())
+      .then((data) => setProjects(data));
+  }, []);
 
   return (
-    <div className="projects">
-      <h1>Mes Projets</h1>
+    <ProtectedRoute>
+      <div className="projects">
+        <h1>Mes Projets</h1>
 
-      {projects.map((project) => (
-        <div key={project.id} className="project-card">
-          <h2>{project.title}</h2>
-          <p>{project.description}</p>
-          <p><strong>Technologies :</strong> {project.technologies}</p>
+        {projects.map((project) => (
+          <div key={project.id} className="project-card">
+            <h2>{project.title}</h2>
+            <p>{project.description}</p>
+            <p>
+              <strong>Technologies :</strong> {project.technologies}
+            </p>
 
-          <Link href={`/projects/${project.id}`} className="details-link">
-            Voir détails
-          </Link>
-        </div>
-      ))}
-    </div>
+            <Link href={`/projects/${project.id}`} className="details-link">
+              Voir détails
+            </Link>
+          </div>
+        ))}
+      </div>
+    </ProtectedRoute>
   );
 }
