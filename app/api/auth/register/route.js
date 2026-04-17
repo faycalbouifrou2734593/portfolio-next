@@ -1,6 +1,10 @@
-export async function POST(req) {
-  const body = await req.json();
+import sequelize from "@/config/db";
+import User from "@/models/User";
 
+export async function POST(req) {
+  await sequelize.sync();
+
+  const body = await req.json();
   const { name, email, password } = body;
 
   if (!name || !email || !password) {
@@ -10,8 +14,18 @@ export async function POST(req) {
     );
   }
 
+  const existingUser = await User.findOne({ where: { email } });
+
+  if (existingUser) {
+    return Response.json(
+      { message: "Cet email existe déjà" },
+      { status: 400 }
+    );
+  }
+
+  await User.create({ name, email, password });
+
   return Response.json({
     message: "Inscription réussie",
-    user: { name, email }
   });
 }

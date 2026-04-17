@@ -1,12 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
+
+  const router = useRouter(); //  pour redirection
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -23,6 +26,17 @@ export default function LoginPage() {
 
     setMessage(data.message);
     setIsError(!res.ok);
+
+    // si connexion réussie
+    if (res.ok) {
+      //  sauvegarder utilisateur
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      //  redirection après 1 seconde
+      setTimeout(() => {
+        router.push("/projects");
+      }, 1000);
+    }
   }
 
   return (
