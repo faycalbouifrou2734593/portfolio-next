@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/store/slices/authSlice";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -9,7 +11,8 @@ export default function LoginPage() {
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
 
-  const router = useRouter(); //  pour redirection
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -27,12 +30,12 @@ export default function LoginPage() {
     setMessage(data.message);
     setIsError(!res.ok);
 
-    // si connexion réussie
     if (res.ok) {
-      //  sauvegarder utilisateur
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      //  redirection après 1 seconde
+      // Redux
+      dispatch(setUser(data.user));
+
       setTimeout(() => {
         router.push("/projects");
       }, 1000);
